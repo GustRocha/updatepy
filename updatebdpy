@@ -1,0 +1,27 @@
+import MySQLdb
+
+host = "localhost"
+user = "root"
+passaword = "guri1997"
+db = "udemy"
+port = 3306
+
+con =MySQLdb.connect(host, user, passaword, db, port)
+
+c = con.cursor(MySQLdb.cursors.DictCursor)
+
+
+def update(sets, table, where=None):
+
+	global c, con
+
+	query = "UPDATE " + table
+	query = query + " SET " + ",".join([field +" = '" + value +"'" for field, value in sets.items()])
+	if(where):
+		query = query + " WHERE " + where
+
+	c.execute(query)
+	con.commit()
+
+update({"nome":"Daniel Hora", "cpf": "987456123"}, "alunos", "id_alunos = 6")
+print(select("*", "alunos", "id_alunos = 6")) 
